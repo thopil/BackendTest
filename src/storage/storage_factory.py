@@ -3,14 +3,14 @@ Created on 12 Oct 2018
 
 @author: thomaspilz
 '''
-from slot_pool import SlotPool
-from DBBackend import DBBackend
+from memory_backend import MemoryStorage
+from db_storage import DBStorage
 
 class StorageFactory(object):
     '''
     Fraud Engine Factory
     '''
-    STORAGE_ENGINES = [SlotPool, DBBackend]
+    STORAGE_ENGINES = [MemoryStorage, DBStorage]
 
     def __init__(self, engine_name):
         self.engine_name = engine_name

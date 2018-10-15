@@ -7,11 +7,10 @@ from singleton import Singleton
 from abc import ABCMeta, abstractmethod
 
 
-class BaseStorage(Singleton):
+class BaseStorage(Singleton, metaclass=ABCMeta):
     '''
     Base class for all storages
     '''
-    __metaclass__ = ABCMeta
 
     def __init__(self, engine_name):
         '''

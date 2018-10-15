@@ -13,10 +13,7 @@ class Candidate(Person):
 
     def __init__(self, name):
         '''
-        Constructor
+        Inherited from Person
         '''
         super(Candidate).__init__(name)
-        self.__free_slots = []
 
-    def get_slots(self):
-        return self.__free_slots

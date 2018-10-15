@@ -7,12 +7,12 @@ from base_storage import BaseStorage
 from datetime import timedelta, datetime
 
 
-class SlotPool(BaseStorage):
+class MemoryStorage(BaseStorage):
     '''
     Inherited class from BaseStorage
     '''
 
-    ENGINE_NAME = 'slot_pool'
+    ENGINE_NAME = 'memory_storage'
 
     def __init__(self, engine_name):
         '''
@@ -90,6 +90,8 @@ class SlotPool(BaseStorage):
         @param name: key to identify slot
         @param slot: free slot
         '''
-        self.__slots_by_name[name] = slots
+        new_slots = self._format_time_ranges(slots)
+        self.__slots_by_name[name] = new_slots
+        self.__interviewers.append(name)
 
     slots = property(get_all_slots, set_slots, del_slots, "slots's docstring")
