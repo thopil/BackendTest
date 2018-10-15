@@ -7,7 +7,7 @@ from person import Person
 
 class Interviewer(Person):
     '''
-    classdocs
+    Interviewer class inherited from Person
     '''
 
 
@@ -15,4 +15,4 @@ class Interviewer(Person):
         '''
         Inherited from Person
         '''
-        super(Interviewer).__init__(name)
+        super().__init__(name)

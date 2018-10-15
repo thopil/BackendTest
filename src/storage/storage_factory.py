@@ -3,14 +3,15 @@ Created on 12 Oct 2018
 
 @author: thomaspilz
 '''
-from memory_backend import MemoryStorage
+from memory_storage import MemoryStorage
 from db_storage import DBStorage
+from google_storage import GoogleCalendarStorage
 
 class StorageFactory(object):
     '''
     Fraud Engine Factory
     '''
-    STORAGE_ENGINES = [MemoryStorage, DBStorage]
+    STORAGE_ENGINES = [MemoryStorage, DBStorage, GoogleCalendarStorage]
 
     def __init__(self, engine_name):
         self.engine_name = engine_name
