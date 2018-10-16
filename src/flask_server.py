@@ -1,16 +1,14 @@
+#!/usr/bin/python3
 '''
 Created on 15 Oct 2018
 
 @author: thomaspilz
 '''
 
-#curl -vX POST http://localhost:5000/api/v1/slots -d @test_data_interviewer.json --header "Content-Type: application/json"
-#curl -vX GET http://localhost:5000/api/v1/slots/all -d @test_data_candidate.json --header "Content-Type: application/json"
-
 import json
-
 import flask
 from flask import request, jsonify
+
 from storage_factory import StorageFactory
 from roles.candidate import Candidate
 from roles.interviewer import Interviewer
@@ -90,5 +88,9 @@ def handle_bad_request(error):
     payload['status'] = error.status
     payload['message'] = error.message
     return jsonify(payload), 400
+
+@app.errorhandler(404)
+def not_found(e):
+    return jsonify({'message': '404 Not found'}), 404
 
 app.run()

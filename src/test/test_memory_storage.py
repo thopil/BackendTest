@@ -4,8 +4,9 @@ Created on 14 Oct 2018
 @author: thomaspilz
 '''
 import unittest
-from storage_factory import StorageFactory
 from datetime import datetime
+
+from storage_factory import StorageFactory
 from roles.candidate import Candidate
 from roles.interviewer import Interviewer
 

@@ -32,6 +32,11 @@ for development and testing purposes.
     curl -vX GET http://localhost:5000/api/v1/slots -d @test_data_candidate_tom.json --header "Content-Type: application/json"
 8. to get a better overview how the request structs are built, feel free to run the tests
 
+### Usage (Example)
+1. http://localhost:5000/api/v1/interviewer
+2. http://localhost:5000/api/v1/slots/interviewer_1
+
+
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
