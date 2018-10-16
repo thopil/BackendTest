@@ -4,13 +4,13 @@ Created on 12 Oct 2018
 @author: thomaspilz
 '''
 from singleton import Singleton
-from abc import ABCMeta, abstractmethod
 from datetime import datetime
 
 
-class BaseStorage(Singleton, metaclass=ABCMeta):
+class BaseStorage(Singleton):
     '''
     Base class for all storages
+    used as singelton
     '''
 
     def __init__(self, engine_name):
@@ -23,17 +23,21 @@ class BaseStorage(Singleton, metaclass=ABCMeta):
     @classmethod
     def check_name(cls, engine_name):
         '''
-
         :param cls:
         :param engine_name:
         '''
         return engine_name == cls.ENGINE_NAME
 
-    @abstractmethod
     def get_all_slots(self):
         pass
 
     def _get_range_intersections(self, interviewer, requests, duration, f_slots):
+        '''
+        find all overlapping slots from interviewer and candidate
+        :param interviewer - who belongs to the current f_slots
+        :param requests - requested_slots of candidate
+        :returns: available free slots of each interviewer
+        '''
         sorted_slots = sorted(f_slots)
         available_slots = []
         for start, end in sorted_slots:
@@ -52,6 +56,12 @@ class BaseStorage(Singleton, metaclass=ABCMeta):
         return available_slots
 
     def _format_time_ranges(self, slots):
+        '''
+        format all incoming datetime strings
+        to datetime objects
+        :param slots: list of datetime strings
+        :returns: formatted list of datetime
+        '''
         dt_format = '%Y-%m-%d %H:%M:%S'
         return [(datetime.strptime(slot[0], dt_format),
                  datetime.strptime(slot[1], dt_format)) for slot in slots]

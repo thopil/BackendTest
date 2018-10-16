@@ -21,4 +21,4 @@ class Slot(object):
         """
         Two slots are equal if their datetimes of begin and end are equal
         """
-        return (self.begin[0] == other.begin[0] and self.end[0] == other.end[1])
+        return (self.begin[0] == other.begin[0] and self.end[1] == other.end[1])

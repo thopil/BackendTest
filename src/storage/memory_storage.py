@@ -20,7 +20,7 @@ class MemoryStorage(BaseStorage):
 
     def __init__(self, engine_name):
         '''
-        manages all available slots (free/blocked)
+        manages all available slots (free/blocked) in memory
         -  usually handled by relational database
         '''
         BaseStorage.__init__(self, engine_name)
@@ -42,6 +42,10 @@ class MemoryStorage(BaseStorage):
         return self.__slots_by_interviewer.items()
 
     def get_free_slots(self, candidate, *interviewers):
+        '''
+        :param candidate: candidate who requested free slots
+        :returns: intersection of slots for all requested interviewers
+        '''
         self.__candidates.append(candidate)
         requested_slots = candidate.get_requested_slots()
         requested_slots = self._format_time_ranges(requested_slots)
@@ -70,7 +74,6 @@ class MemoryStorage(BaseStorage):
         return available_slots
 
     def set_slots(self, data_slots):
-        # needs to be converted to datetime objects
         for name, slots in data_slots.items():
             interviewer = Interviewer(name)
             self.set_slots_by_interviewer(interviewer, slots)
@@ -79,8 +82,8 @@ class MemoryStorage(BaseStorage):
         '''
         set a new slot
         needs to be thread-safe
-        @param name: key to identify slot
-        @param slot: free slot
+        :param identifier: key to identify slot
+        :param slot: free slot
         '''
         new_slots = self._format_time_ranges(slots)
         with self.lock:
