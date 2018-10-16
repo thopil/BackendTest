@@ -12,11 +12,13 @@ from roles.interviewer import Interviewer
 initial_data = {
                 'interviewer_1': [
                     (datetime(2018, 10, 14, 9, 0), datetime(2018, 10, 14, 10, 0)),
-                    (datetime(2018, 10, 16, 9, 0), datetime(2018, 10, 16, 14, 0))
+                    (datetime(2018, 10, 16, 9, 0), datetime(2018, 10, 16, 14, 0)),
+                    (datetime(2018, 10, 17, 11, 0), datetime(2018, 10, 17, 12, 0))
                 ],
                 'interviewer_2': [
                     (datetime(2018, 10, 15, 10, 0), datetime(2018, 10, 15, 11, 0)),
-                    (datetime(2018, 10, 17, 11, 0), datetime(2018, 10, 17, 12, 0))
+                    (datetime(2018, 10, 16, 11, 0), datetime(2018, 10, 16, 12, 0)),
+                    (datetime(2018, 10, 17, 10, 0), datetime(2018, 10, 17, 12, 0))
                 ]
                 }
 
