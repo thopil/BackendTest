@@ -4,11 +4,21 @@ Created on 12 Oct 2018
 @author: thomaspilz
 '''
 import threading
-from datetime import timedelta
+from datetime import timedelta, datetime
 
 from base_storage import BaseStorage
 from roles.interviewer import Interviewer
 
+initial_data = {
+                'interviewer_1': [
+                    (datetime(2018, 10, 14, 9, 0), datetime(2018, 10, 14, 10, 0)),
+                    (datetime(2018, 10, 16, 9, 0), datetime(2018, 10, 16, 14, 0))
+                ],
+                'interviewer_2': [
+                    (datetime(2018, 10, 15, 10, 0), datetime(2018, 10, 15, 11, 0)),
+                    (datetime(2018, 10, 17, 11, 0), datetime(2018, 10, 17, 12, 0))
+                ]
+                }
 
 class MemoryStorage(BaseStorage):
     '''
@@ -24,8 +34,8 @@ class MemoryStorage(BaseStorage):
         -  usually handled by relational database
         '''
         BaseStorage.__init__(self, engine_name)
-        self.__slots_by_interviewer = {}
-        self.__interviewers = []
+        self.__slots_by_interviewer = initial_data
+        self.__interviewers = [Interviewer('interviewer_1'), Interviewer('interviewer_2')]
         self.__candidates = []
         self.lock = threading.Lock()
 

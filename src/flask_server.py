@@ -27,7 +27,7 @@ storage = StorageFactory('memory_storage').create_storage()
 def home():
     return '''<h1>Slots API</h1>'''
 
-@app.route('/api/v1/slots/all', methods=['GET'])
+@app.route('/api/v1/slots', methods=['GET'])
 def api_slots_all():
     all_slots = []
     if request.json:
@@ -38,6 +38,9 @@ def api_slots_all():
         result = storage.get_free_slots(candidate, *interviewer)
         if result is not None:
             all_slots = list(result)
+        else:
+            return json.dumps({'success': False,
+                               'message': 'No slots for %s found' % interviewer}), 200, {'ContentType':'application/json'}
     else:
         all_slots = list(storage.get_all_slots())
     return jsonify(all_slots)
@@ -49,7 +52,7 @@ def api_slots_by_name(name):
         raise BadRequest('Name of interviewer not found', 40001, { 'ext': 1 })
     return jsonify(results)
 
-@app.route('/api/v1/interviewer/all', methods=['GET'])
+@app.route('/api/v1/interviewer', methods=['GET'])
 def api_interviewer_all():
     results = storage.get_interviewer()
     return jsonify(results)
