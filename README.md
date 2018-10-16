@@ -23,12 +23,12 @@ for development and testing purposes.
     pip install -r requirements.txt
 5. start API server which listens on http://localhost:5000 -
     python3 flask_server.py
-6. send available slots of interviewers, e.g. from testfile in src-folder:
+6. send available slots of interviewers, e.g. from testfile in src-folder:<br />
     curl -vX POST http://localhost:5000/api/v1/slots -d @test_data_interviewer.json --header "Content-Type: application/json"
 7. send candidate request including his time slots to API. The API will respond with the commom time slots of
-   available interviewers: \n
-    curl -vX GET http://localhost:5000/api/v1/slots -d @test_data_candidate_carl.json --header "Content-Type: application/json" \n
-    or \n
+   available interviewers:<br />
+    curl -vX GET http://localhost:5000/api/v1/slots -d @test_data_candidate_carl.json --header "Content-Type: application/json"<br />
+    or<br />
     curl -vX GET http://localhost:5000/api/v1/slots -d @test_data_candidate_tom.json --header "Content-Type: application/json"
 8. to get a better overview how the request structs are built, feel free to run the tests
 
