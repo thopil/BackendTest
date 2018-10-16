@@ -1,11 +1,17 @@
+# Backend Challenge
+
 This API provides a simple interface to find intersections of available
 time slots between candidates and interviewers.
 
 Currently it handles only JSON requests and responses which are based
 on different storage engines, like memory-based or a database wrapper.
 
-Steps to run the API:
+## Getting started
 
+These instructions will get you a copy of the project up and running on your local machine
+for development and testing purposes.
+
+### Installing
 1. install python3 and virtualenv
 2. eventually upgrade virtualenv
     pip install --upgrade virtualenv
@@ -25,3 +31,6 @@ Steps to run the API:
 8. to get a better overview how the request structs are built,
 feel free to run the tests
 
+## License
+
+This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
