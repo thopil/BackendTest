@@ -3,9 +3,11 @@ Created on 12 Oct 2018
 
 @author: thomaspilz
 '''
-from base_storage import BaseStorage
+import threading
 from datetime import timedelta
-from interviewer import Interviewer
+
+from base_storage import BaseStorage
+from roles.interviewer import Interviewer
 
 
 class MemoryStorage(BaseStorage):
@@ -25,6 +27,7 @@ class MemoryStorage(BaseStorage):
         self.__slots_by_interviewer = {}
         self.__interviewers = []
         self.__candidates = []
+        self.lock = threading.Lock()
 
     def del_slots(self):
         del self.__slots_by_interviewer
@@ -77,7 +80,8 @@ class MemoryStorage(BaseStorage):
         @param slot: free slot
         '''
         new_slots = self._format_time_ranges(slots)
-        self.__slots_by_interviewer[interviewer.name] = new_slots
-        self.__interviewers.append(interviewer)
+        with self.lock:
+            self.__slots_by_interviewer[interviewer.name] = new_slots
+            self.__interviewers.append(interviewer)
 
     slots = property(get_all_slots, set_slots, del_slots, "slots's docstring")

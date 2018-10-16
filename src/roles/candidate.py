@@ -3,7 +3,8 @@ Created on 12 Oct 2018
 
 @author: thomaspilz
 '''
-from person import Person
+from roles.person import Person
+
 
 class Candidate(Person):
     '''

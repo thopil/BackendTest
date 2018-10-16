@@ -6,8 +6,8 @@ Created on 14 Oct 2018
 import unittest
 from storage_factory import StorageFactory
 from datetime import datetime
-from candidate import Candidate
-from interviewer import Interviewer
+from roles.candidate import Candidate
+from roles.interviewer import Interviewer
 
 
 class Test(unittest.TestCase):
