@@ -32,6 +32,9 @@ class MemoryStorage(BaseStorage):
     def del_slots(self):
         del self.__slots_by_interviewer
 
+    def get_interviewer(self):
+        return [interviewer.name for interviewer in self.__interviewers]
+
     def get_slots_by_name(self, name):
         return self.__slots_by_interviewer.get(name)
 

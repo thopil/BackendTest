@@ -14,6 +14,7 @@ from flask import request, jsonify
 from storage_factory import StorageFactory
 from roles.candidate import Candidate
 from roles.interviewer import Interviewer
+from exceptions.bad_request import BadRequest
 
 app = flask.Flask(__name__)
 app.config["DEBUG"] = True
@@ -24,12 +25,7 @@ storage = StorageFactory('memory_storage').create_storage()
 
 @app.route('/', methods=['GET'])
 def home():
-    return '''<h1>Slots API</h1>
-    <p>Please send first POST request e.g. with cUrl<br />
-    curl -vX POST http://localhost:5000/api/v1/slots -d @test_data_interviewer.json --header "Content-Type: application/json"
-    </p><p>Then you could send a GET with <br />
-    curl -vX GET http://localhost:5000/api/v1/slots/all -d @test_data_candidate.json --header "Content-Type: application/json"
-    '''
+    return '''<h1>Slots API</h1>'''
 
 @app.route('/api/v1/slots/all', methods=['GET'])
 def api_slots_all():
@@ -49,6 +45,13 @@ def api_slots_all():
 @app.route('/api/v1/slots/<name>', methods=['GET'])
 def api_slots_by_name(name):
     results = storage.get_slots_by_name(name)
+    if not results:
+        raise BadRequest('Name of interviewer not found', 40001, { 'ext': 1 })
+    return jsonify(results)
+
+@app.route('/api/v1/interviewer/all', methods=['GET'])
+def api_interviewer_all():
+    results = storage.get_interviewer()
     return jsonify(results)
 
 #-- POST
@@ -70,5 +73,19 @@ def api_set_slots():
         interviewer = Interviewer(name)
         storage.set_slots_by_interviewer(interviewer, slots)
     return json.dumps({'success':True}), 200, {'ContentType':'application/json'}
+
+#-- error handling
+@app.errorhandler(Exception)
+def unhandled_exception(e):
+    app.logger.error('Unhandled Exception: %s', (e))
+    return {'message': 'Internal Server Error'}, 500
+
+@app.errorhandler(BadRequest)
+def handle_bad_request(error):
+    """Catch BadRequest exception globally, serialize into JSON, and respond with 400."""
+    payload = dict(error.payload or ())
+    payload['status'] = error.status
+    payload['message'] = error.message
+    return jsonify(payload), 400
 
 app.run()
