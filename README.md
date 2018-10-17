@@ -29,7 +29,7 @@ Candidates send a request including free slots and a list of interviewers.
     python3 flask_server.py
 6. to get a better overview how the request structs are built, feel free to run the tests
 
-### Usage (Example)
+### Usage (Naive approach)
 1. http://localhost:5000/api/v1/interviewer
 2. http://localhost:5000/api/v1/slots/interviewer_1
 3. send available slots of interviewers, e.g. from testfile in src-folder:<br />
@@ -40,7 +40,7 @@ Candidates send a request including free slots and a list of interviewers.
     or<br />
     curl -vX GET http://localhost:5000/api/v1/slots -d @test_data_candidate_tom.json --header "Content-Type: application/json"
 
-### Usage (Experimental)
+### Usage (Experimental approach)
 
 Also an additional experimental approach with numpy was implemented.
 Just send a POST request to the server by <br />

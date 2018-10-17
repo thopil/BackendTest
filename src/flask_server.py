@@ -15,7 +15,7 @@ from roles.interviewer import Interviewer
 from exceptions.bad_request import BadRequest
 
 app = flask.Flask(__name__)
-app.config["DEBUG"] = True
+#app.config["DEBUG"] = True
 
 storage = StorageFactory('memory_storage').create_storage()
 
@@ -94,7 +94,7 @@ def api_set_slots():
 #-- error handling
 @app.errorhandler(Exception)
 def unhandled_exception(e):
-    app.logger.error('Unhandled Exception: %s', (e))
+    #app.logger.error('Unhandled Exception: %s', (e))
     return {'message': 'Internal Server Error'}, 500
 
 @app.errorhandler(BadRequest)
@@ -106,7 +106,7 @@ def handle_bad_request(error):
     return jsonify(payload), 400
 
 @app.errorhandler(404)
-def not_found(e):
+def page_not_found(e):
     return jsonify({'message': '404 Not found'}), 404
 
 app.run()
