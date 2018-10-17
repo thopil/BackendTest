@@ -54,7 +54,7 @@ def api_slots_all_np():
             all_slots = list(result)
         else:
             return json.dumps({'success': False,
-                               'message': 'No slots for %s found' % interviewer_list.keys()}), 200, {'ContentType':'application/json'}
+                               'message': 'No slots for %s found' % interviewers.keys()}), 200, {'ContentType':'application/json'}
     else:
         all_slots = list(storage.get_all_slots())
     return jsonify(all_slots)
