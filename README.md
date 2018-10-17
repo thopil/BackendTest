@@ -40,6 +40,11 @@ Candidates send a request including free slots and a list of interviewers.
     or<br />
     curl -vX GET http://localhost:5000/api/v1/slots -d @test_data_candidate_tom.json --header "Content-Type: application/json"
 
+### Usage (Experimental)
+
+Also an additional experimental approach with numpy was implemented.
+Just send a POST request to the server by <br />
+curl -vX POST http://localhost:5000/api/v1/slots_np -d @test_data_np.json --header "Content-Type: application/json"
 
 ## License
 

@@ -43,6 +43,22 @@ def api_slots_all():
         all_slots = list(storage.get_all_slots())
     return jsonify(all_slots)
 
+@app.route('/api/v1/slots_np', methods=['GET'])
+def api_slots_all_np():
+    all_slots = []
+    if request.json:
+        interviewers = request.json.get('interviewer')
+        candidates = request.json.get('candidates')
+        result = storage.get_free_slots_np(candidates, interviewers)
+        if result is not None:
+            all_slots = list(result)
+        else:
+            return json.dumps({'success': False,
+                               'message': 'No slots for %s found' % interviewer_list.keys()}), 200, {'ContentType':'application/json'}
+    else:
+        all_slots = list(storage.get_all_slots())
+    return jsonify(all_slots)
+
 @app.route('/api/v1/slots/<name>', methods=['GET'])
 def api_slots_by_name(name):
     results = storage.get_slots_by_name(name)

@@ -4,23 +4,25 @@ Created on 12 Oct 2018
 @author: tp
 '''
 import threading
+import numpy as np
 from datetime import timedelta, datetime
+from functools import reduce
 
 from base_storage import BaseStorage
 from roles.interviewer import Interviewer
 
 initial_data = {
-                'interviewer_1': [
-                    (datetime(2018, 10, 14, 9, 0), datetime(2018, 10, 14, 10, 0)),
-                    (datetime(2018, 10, 16, 9, 0), datetime(2018, 10, 16, 14, 0)),
-                    (datetime(2018, 10, 17, 11, 0), datetime(2018, 10, 17, 12, 0))
-                ],
-                'interviewer_2': [
-                    (datetime(2018, 10, 15, 10, 0), datetime(2018, 10, 15, 11, 0)),
-                    (datetime(2018, 10, 16, 11, 0), datetime(2018, 10, 16, 12, 0)),
-                    (datetime(2018, 10, 17, 10, 0), datetime(2018, 10, 17, 12, 0))
-                ]
-                }
+    'interviewer_1': [
+        (datetime(2018, 10, 14, 9, 0), datetime(2018, 10, 14, 10, 0)),
+        (datetime(2018, 10, 16, 9, 0), datetime(2018, 10, 16, 14, 0)),
+        (datetime(2018, 10, 17, 11, 0), datetime(2018, 10, 17, 12, 0))
+    ],
+    'interviewer_2': [
+        (datetime(2018, 10, 15, 10, 0), datetime(2018, 10, 15, 11, 0)),
+        (datetime(2018, 10, 16, 11, 0), datetime(2018, 10, 16, 12, 0)),
+        (datetime(2018, 10, 17, 10, 0), datetime(2018, 10, 17, 12, 0))
+    ]
+}
 
 class MemoryStorage(BaseStorage):
     '''
@@ -101,5 +103,34 @@ class MemoryStorage(BaseStorage):
         with self.lock:
             self.__slots_by_interviewer[interviewer.name] = new_slots
             self.__interviewers.append(interviewer)
+
+    #-- experimental approach
+    def _create_slots_array(self, slots):
+        '''
+        create numpy array for each hour in the datetime range
+        '''
+        slot_array = np.array([])
+        for slot in slots:
+            begin, end = slot
+            arr = np.array([begin + timedelta(hours=i) for i in range(end.hour-begin.hour)])
+            slot_array = np.concatenate((slot_array, arr))
+        return slot_array
+
+    def _create_np_container(self, input_data):
+        container = {}
+        for name, slots in input_data.items():
+            new_slots = self._format_time_ranges(slots)
+            container[name] = self._create_slots_array(new_slots)
+        return container
+
+    def get_free_slots_np(self, candidate_data, interviewer_data):
+        interviewer = self._create_np_container(interviewer_data)
+        candidates = self._create_np_container(candidate_data)
+        interviewer_slots = [interviewer.get(name) for name in interviewer]
+        candidate_slots =   [candidates.get(name) for name in candidates]
+        slots = interviewer_slots + candidate_slots
+
+        result = reduce(np.intersect1d, slots)
+        return result
 
     slots = property(get_all_slots, set_slots, del_slots, "slots's docstring")
