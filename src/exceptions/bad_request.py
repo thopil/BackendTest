@@ -1,7 +1,7 @@
 '''
 Created on 16 Oct 2018
 
-@author: thomaspilz
+@author: tp
 '''
 
 class BadRequest(Exception):

@@ -1,7 +1,7 @@
 '''
 Created on 12 Oct 2018
 
-@author: thomaspilz
+@author: tp
 '''
 import threading
 from datetime import timedelta, datetime

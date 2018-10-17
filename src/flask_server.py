@@ -2,7 +2,7 @@
 '''
 Created on 15 Oct 2018
 
-@author: thomaspilz
+@author: tp
 '''
 
 import json

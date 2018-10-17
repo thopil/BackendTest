@@ -1,7 +1,7 @@
 '''
 Created on 14 Oct 2018
 
-@author: thomaspilz
+@author: tp
 '''
 import unittest
 from datetime import datetime

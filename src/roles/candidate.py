@@ -1,7 +1,7 @@
 '''
 Created on 12 Oct 2018
 
-@author: thomaspilz
+@author: tp
 '''
 from roles.person import Person
 
