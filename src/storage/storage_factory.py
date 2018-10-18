@@ -3,9 +3,10 @@ Created on 12 Oct 2018
 
 @author: tp
 '''
-from memory_storage import MemoryStorage
-from db_storage import DBStorage
-from google_storage import GoogleCalendarStorage
+from storage.memory_storage import MemoryStorage
+from storage.db_storage import DBStorage
+from storage.google_storage import GoogleCalendarStorage
+
 
 class StorageFactory(object):
     '''

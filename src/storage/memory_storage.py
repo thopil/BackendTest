@@ -8,7 +8,7 @@ import numpy as np
 from datetime import timedelta, datetime
 from functools import reduce
 
-from base_storage import BaseStorage
+from .base_storage import BaseStorage
 from roles.interviewer import Interviewer
 
 initial_data = {

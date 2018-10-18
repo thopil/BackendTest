@@ -6,7 +6,7 @@ Created on 14 Oct 2018
 import unittest
 from datetime import datetime
 
-from storage_factory import StorageFactory
+from storage.storage_factory import StorageFactory
 from roles.candidate import Candidate
 from roles.interviewer import Interviewer
 

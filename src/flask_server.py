@@ -9,7 +9,7 @@ import json
 import flask
 from flask import request, jsonify
 
-from storage_factory import StorageFactory
+from storage.storage_factory import StorageFactory
 from roles.candidate import Candidate
 from roles.interviewer import Interviewer
 from exceptions.bad_request import BadRequest

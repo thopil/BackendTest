@@ -3,7 +3,8 @@ Created on 12 Oct 2018
 
 @author: tp
 '''
-from base_storage import BaseStorage
+from .base_storage import BaseStorage
+
 
 class DBStorage(BaseStorage):
     '''
