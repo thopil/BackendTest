@@ -84,14 +84,14 @@ def api_set_slots_by_name():
     name = request.json.get('name')
     interviewer = Interviewer(name)
     storage.set_slots_by_interviewer(interviewer, slots)
-    return json.dumps({'success':True}), 200, {'ContentType':'application/json'}
+    return json.dumps({'success':True, 'message': 'Slots successfully set!'}), 200, {'ContentType':'application/json'}
 
 @app.route('/api/v1/slots', methods=['POST'])
 def api_set_slots():
     for name, slots in request.json.items():
         interviewer = Interviewer(name)
         storage.set_slots_by_interviewer(interviewer, slots)
-    return json.dumps({'success':True}), 200, {'ContentType':'application/json'}
+    return json.dumps({'success':True, 'message': 'Slots successfully set!'}), 200, {'ContentType':'application/json'}
 
 #-- error handling
 @app.errorhandler(Exception)
