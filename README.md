@@ -35,7 +35,7 @@ Candidates send a request including free slots and a list of interviewers.
 ```
 5. start API server which listens on http://localhost:5000
 ```
-    python3 flask_server.py
+    python3 src/flask_server.py
 ```
 6. to get a better overview how the request structs are built, feel free to run the tests
 
