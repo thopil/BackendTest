@@ -3,7 +3,7 @@
 This API provides a simple interface to find intersections of available
 time slots between candidates and interviewers.
 
-Currently it handles only JSON requests and responses which are based
+Currently it handles only JSON requests through the HTTP protocol and responses which are based
 on different storage engines, like memory-based or a database wrapper.
 
 ## Getting started
@@ -33,18 +33,18 @@ Candidates send a request including free slots and a list of interviewers.
 1. http://localhost:5000/api/v1/interviewer
 2. http://localhost:5000/api/v1/slots/interviewer_1
 3. send available slots of interviewers, e.g. from testfile in src-folder:<br />
-    curl -vX POST http://localhost:5000/api/v1/slots -d @test_data_interviewer.json --header "Content-Type: application/json"
+    curl -X POST http://localhost:5000/api/v1/slots -d @test_data_interviewer.json --header "Content-Type: application/json"
 4. send candidate request including his time slots to API. The API will respond with the commom time slots of
    available interviewers:<br />
-    curl -vX GET http://localhost:5000/api/v1/slots -d @test_data_candidate_carl.json --header "Content-Type: application/json"<br />
+    curl -X GET http://localhost:5000/api/v1/slots -d @test_data_candidate_carl.json --header "Content-Type: application/json"<br />
     or<br />
-    curl -vX GET http://localhost:5000/api/v1/slots -d @test_data_candidate_tom.json --header "Content-Type: application/json"
+    curl -X GET http://localhost:5000/api/v1/slots -d @test_data_candidate_tom.json --header "Content-Type: application/json"
 
 ### Usage (Experimental approach)
 
 Also an additional experimental approach with numpy was implemented.
 Just send a POST request to the server by <br />
-curl -vX POST http://localhost:5000/api/v1/slots_np -d @test_data_np.json --header "Content-Type: application/json"
+    curl -X POST http://localhost:5000/api/v1/slots_np -d @test_data_np.json --header "Content-Type: application/json"
 
 ## License
 
