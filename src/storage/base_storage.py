@@ -5,6 +5,7 @@ Created on 12 Oct 2018
 '''
 from singleton import Singleton
 from datetime import datetime
+from exceptions.bad_request import BadRequest
 
 
 class BaseStorage(Singleton):
@@ -63,5 +64,8 @@ class BaseStorage(Singleton):
         :returns: formatted list of datetime
         '''
         dt_format = '%Y-%m-%d %H:%M:%S'
-        return [(datetime.strptime(slot[0], dt_format),
-                 datetime.strptime(slot[1], dt_format)) for slot in slots]
+        try:
+            return [(datetime.strptime(slot[0], dt_format),
+                     datetime.strptime(slot[1], dt_format)) for slot in slots]
+        except IndexError:
+            raise BadRequest('Please check your slots', 400)

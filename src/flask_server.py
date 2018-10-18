@@ -15,7 +15,7 @@ from roles.interviewer import Interviewer
 from exceptions.bad_request import BadRequest
 
 app = flask.Flask(__name__)
-#app.config["DEBUG"] = True
+app.config["DEBUG"] = True
 
 storage = StorageFactory('memory_storage').create_storage()
 
@@ -31,6 +31,8 @@ def api_slots_all():
     if request.json:
         interviewer = request.json.get('interviewer')
         candidate_json = request.json.get('candidate')
+        if interviewer is None or candidate_json is None:
+            raise BadRequest('Please check your json data', 400)
         candidate = Candidate(candidate_json.get('name'))
         candidate.set_requested_slots(candidate_json.get('slots'))
         result = storage.get_free_slots(candidate, *interviewer)
@@ -49,6 +51,8 @@ def api_slots_all_np():
     if request.json:
         interviewers = request.json.get('interviewer')
         candidates = request.json.get('candidates')
+        if interviewers is None or candidates is None:
+            raise BadRequest('Please check your json data', 400)
         result = storage.get_free_slots_np(candidates, interviewers)
         if result is not None:
             all_slots = list(result)
@@ -62,8 +66,6 @@ def api_slots_all_np():
 @app.route('/api/v1/slots/<name>', methods=['GET'])
 def api_slots_by_name(name):
     results = storage.get_slots_by_name(name)
-    if not results:
-        raise BadRequest('Name of interviewer not found', 40001, { 'ext': 1 })
     return jsonify(results)
 
 @app.route('/api/v1/interviewer', methods=['GET'])
@@ -95,7 +97,7 @@ def api_set_slots():
 @app.errorhandler(Exception)
 def unhandled_exception(e):
     #app.logger.error('Unhandled Exception: %s', (e))
-    return {'message': 'Internal Server Error'}, 500
+    return jsonify({'message': 'Internal Server Error'}), 500
 
 @app.errorhandler(BadRequest)
 def handle_bad_request(error):

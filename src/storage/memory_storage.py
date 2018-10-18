@@ -50,7 +50,7 @@ class MemoryStorage(BaseStorage):
         return [interviewer.name for interviewer in self.__interviewers]
 
     def get_slots_by_name(self, name):
-        return self.__slots_by_interviewer.get(name)
+        return self.__slots_by_interviewer.get(name, [])
 
     def get_all_slots(self):
         return self.__slots_by_interviewer.items()
