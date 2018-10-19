@@ -61,7 +61,7 @@ Candidates send a request including free slots and a list of interviewers.
 Also an additional experimental approach with numpy was implemented.
 Just send a POST request to the server by <br />
 ```
-    curl -X POST http://localhost:5000/api/v1/slots_np -d @test_data_np.json --header "Content-Type: application/json"
+    curl -X GET http://localhost:5000/api/v1/slots_np -d @test_data_np.json --header "Content-Type: application/json"
 ```
 
 ## License
