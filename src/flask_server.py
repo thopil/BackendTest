@@ -97,7 +97,7 @@ def api_set_slots():
 @app.errorhandler(Exception)
 def unhandled_exception(e):
     #app.logger.error('Unhandled Exception: %s', (e))
-    return jsonify({'message': 'Internal Server Error'}), 500
+    return jsonify({'message': 'Internal Server Error: %s' % str(e)}), 500
 
 @app.errorhandler(BadRequest)
 def handle_bad_request(error):
