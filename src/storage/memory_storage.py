@@ -8,8 +8,9 @@ import numpy as np
 from datetime import timedelta, datetime
 from functools import reduce
 
-from .base_storage import BaseStorage
+from base_storage import BaseStorage
 from roles.interviewer import Interviewer
+from roles.candidate import Candidate
 
 initial_data = {
     'interviewer_1': [
@@ -41,10 +42,20 @@ class MemoryStorage(BaseStorage):
         self.__slots_by_interviewer = initial_data
         self.__interviewers = [Interviewer('interviewer_1'), Interviewer('interviewer_2')]
         self.__candidates = []
+        #experimental
+        self.__candidates_np = dict()
+        self.__interviewers_np = dict()
         self.lock = threading.Lock()
 
     def del_slots(self):
         del self.__slots_by_interviewer
+
+    def del_slots_by_interviewer(self, name):
+        if name in self.__interviewers:
+            del self.__slots_by_interviewer[name]
+            self.__interviewers.remove(name)
+            return True
+        return False
 
     def get_interviewer(self):
         return [interviewer.name for interviewer in self.__interviewers]
@@ -79,7 +90,7 @@ class MemoryStorage(BaseStorage):
                 test_set = slot_set
             test_set = test_set.intersection(slot_set)
 
-        return test_set
+        return self._merge_slots(test_set)
 
     def get_free_slots_by_interviewer(self, interviewer, requests,
                                       duration=timedelta(hours=1)):
@@ -104,6 +115,23 @@ class MemoryStorage(BaseStorage):
             self.__slots_by_interviewer[interviewer.name] = new_slots
             self.__interviewers.append(interviewer)
 
+    def update_slots_by_interviewer(self, interviewer, slots):
+        '''
+        update a new slot for a given interviewer
+        needs to be thread-safe
+        :param identifier: key to identify slot
+        :param slot: free slot
+        '''
+        new_slots = self._format_time_ranges(slots)
+        with self.lock:
+            self.__slots_by_interviewer[interviewer.name] = new_slots
+            self.__interviewers.append(interviewer)
+
+    def already_exists(self, name):
+        if name in self.__interviewers:
+            return True
+
+
     #-- experimental approach
     def _create_slots_array(self, slots):
         '''
@@ -112,7 +140,7 @@ class MemoryStorage(BaseStorage):
         slot_array = np.array([])
         for slot in slots:
             begin, end = slot
-            arr = np.array([begin + timedelta(hours=i) for i in range(end.hour-begin.hour)])
+            arr = np.array([(begin + timedelta(hours=i), begin + timedelta(hours=i+1)) for i in range(end.hour-begin.hour)])
             slot_array = np.concatenate((slot_array, arr))
         return slot_array
 
@@ -123,14 +151,26 @@ class MemoryStorage(BaseStorage):
             container[name] = self._create_slots_array(new_slots)
         return container
 
-    def get_free_slots_np(self, candidate_data, interviewer_data):
-        interviewer = self._create_np_container(interviewer_data)
-        candidates = self._create_np_container(candidate_data)
-        interviewer_slots = [interviewer.get(name) for name in interviewer]
-        candidate_slots =   [candidates.get(name) for name in candidates]
+    def get_free_slots_np(self, candidates_list, interviewer_list):
+        candidate_slots   = [candidate.get_slots() for candidate in self.__candidates_np.values() if candidate.get_name() in candidates_list]
+        interviewer_slots = [interviewer.get_slots() for interviewer in self.__interviewers_np.values() if interviewer.get_name() in interviewer_list]
         slots = interviewer_slots + candidate_slots
 
         result = reduce(np.intersect1d, slots)
         return result
+
+    def set_free_slots_np(self, candidate_data, interviewer_data):
+        interviewer_dict = self._create_np_container(interviewer_data)
+        for name, slots in interviewer_dict.items():
+            interviewer = Interviewer(name)
+            interviewer.set_slots(slots)
+            self.__interviewers_np[name] = interviewer
+
+        candidates_dict = self._create_np_container(candidate_data)
+        for name, slots in candidates_dict.items():
+            candidate = Candidate(name)
+            candidate.set_slots(slots)
+            self.__candidates_np[name] = candidate
+
 
     slots = property(get_all_slots, set_slots, del_slots, "slots's docstring")

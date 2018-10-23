@@ -1,4 +1,6 @@
 #!/usr/bin/python3
+# -*- coding: utf-8 -*-
+
 '''
 Created on 15 Oct 2018
 
@@ -45,14 +47,24 @@ def api_slots_all():
         all_slots = list(storage.get_all_slots())
     return jsonify(all_slots)
 
-@app.route('/api/v1/slots_np', methods=['GET'])
-def api_slots_all_np():
-    all_slots = []
+@app.route('/api/v1/slots_np', methods=['POST'])
+def api_set_slots_all_np():
     if request.json:
         interviewers = request.json.get('interviewer')
         candidates = request.json.get('candidates')
         if interviewers is None or candidates is None:
             raise BadRequest('Please check your json data', 400)
+        storage.set_free_slots_np(candidates, interviewers)
+    return json.dumps({'success':True, 'message': 'Slots successfully set!'}), 200, {'ContentType':'application/json'}
+
+
+@app.route('/api/v1/slots_np', methods=['GET'])
+def api_slots_all_np():
+    all_slots = []
+    get_params = request.args.get
+    if get_params:
+        candidates = request.args.get('candidates')
+        interviewers = request.args.get('interviewers')
         result = storage.get_free_slots_np(candidates, interviewers)
         if result is not None:
             all_slots = list(result)
@@ -72,6 +84,13 @@ def api_slots_by_name(name):
 def api_interviewer_all():
     results = storage.get_interviewer()
     return jsonify(results)
+
+#-- DELETE
+
+@app.route('/api/v1/interviewer/<name>', methods=['DELETE'])
+def api_delete_by_interviewer(name):
+    success = storage.del_slots_by_interviewer(name)
+    return jsonify({'success': success})
 
 #-- POST
 
@@ -93,6 +112,17 @@ def api_set_slots():
         storage.set_slots_by_interviewer(interviewer, slots)
     return json.dumps({'success':True, 'message': 'Slots successfully set!'}), 200, {'ContentType':'application/json'}
 
+#-- PUT
+@app.route('/api/v1/slots/<name>', methods=['PUT'])
+def api_update_slots_by_name():
+    if not request.json or not 'slots' in request.json:
+        return 'Error: No post data provided'
+
+    slots = request.json.get('slots')
+    name = request.json.get('name')
+    storage.update_slots_by_interviewer(interviewer, slots)
+    return json.dumps({'success':True, 'message': 'Slots successfully set!'}), 200, {'ContentType':'application/json'}
+
 #-- error handling
 @app.errorhandler(Exception)
 def unhandled_exception(e):
@@ -111,4 +141,5 @@ def handle_bad_request(error):
 def page_not_found(e):
     return jsonify({'message': '404 Not found'}), 404
 
-app.run()
+if __name__ == '__main__':
+    app.run()

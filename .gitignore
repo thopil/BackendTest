@@ -103,3 +103,4 @@ venv.bak/
 # mypy
 .mypy_cache/
 /virt_env/
+/virt_evn/

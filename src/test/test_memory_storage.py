@@ -72,28 +72,34 @@ class Test(unittest.TestCase):
         test_candidate = Candidate('Carl')
         test_candidate.set_requested_slots(self.requests)
         rtv = self.memory_storage.get_free_slots(test_candidate, 'Sarah', 'Philip')
-        assert rtv == {(datetime(2018, 10, 15, 9, 0), datetime(2018, 10, 15, 10, 0)),
-                       (datetime(2018, 10, 17, 9, 0), datetime(2018, 10, 17, 10, 0))}
+        assert rtv == [(datetime(2018, 10, 15, 9, 0), datetime(2018, 10, 15, 10, 0)),
+                       (datetime(2018, 10, 17, 9, 0), datetime(2018, 10, 17, 10, 0))]
 
     def test_05_get_free_slots(self):
         test_candidate = Candidate('Carl')
         test_candidate.set_requested_slots(self.requests)
         rtv = self.memory_storage.get_free_slots(test_candidate, 'Philip')
-        assert rtv == {(datetime(2018, 10, 14, 9, 0), datetime(2018, 10, 14, 10, 0)),
-                       (datetime(2018, 10, 17, 9, 0), datetime(2018, 10, 17, 10, 0)),
+        assert rtv == [(datetime(2018, 10, 14, 9, 0), datetime(2018, 10, 14, 10, 0)),
                        (datetime(2018, 10, 15, 9, 0), datetime(2018, 10, 15, 10, 0)),
-                       (datetime(2018, 10, 16, 11, 0), datetime(2018, 10, 16, 12, 0)),
-                       (datetime(2018, 10, 16, 9, 0), datetime(2018, 10, 16, 10, 0)),
-                       (datetime(2018, 10, 18, 9, 0), datetime(2018, 10, 18, 10, 0)),
-                       (datetime(2018, 10, 16, 10, 0), datetime(2018, 10, 16, 11, 0))}
+                       (datetime(2018, 10, 16, 9, 0), datetime(2018, 10, 16, 12, 0)),
+                       (datetime(2018, 10, 17, 9, 0), datetime(2018, 10, 17, 10, 0)),
+                       (datetime(2018, 10, 18, 9, 0), datetime(2018, 10, 18, 10, 0))]
 
 
     def test_06_get_free_slots(self):
         test_candidate = Candidate('Carl')
         test_candidate.set_requested_slots(self.requests)
         rtv = self.memory_storage.get_free_slots(test_candidate, 'Thomas')
-        assert rtv == {(datetime(2018, 10, 16, 11, 0), datetime(2018, 10, 16, 12, 0))}
+        assert rtv == [(datetime(2018, 10, 16, 11, 0), datetime(2018, 10, 16, 12, 0))]
 
+    def test_07__merge_slots(self):
+        test_data = {(datetime(2018, 10, 16, 10, 0), datetime(2018, 10, 16, 11, 0)),
+                     (datetime(2018, 10, 16, 11, 0), datetime(2018, 10, 16, 12, 0)),
+                     (datetime(2018, 10, 17, 10, 0), datetime(2018, 10, 17, 11, 0)),
+                     (datetime(2018, 10, 17, 11, 0), datetime(2018, 10, 17, 12, 0)),}
+        rtv = self.memory_storage._merge_slots(test_data)
+        assert rtv == [(datetime(2018, 10, 16, 10, 0), datetime(2018, 10, 16, 12, 0)),
+                       (datetime(2018, 10, 17, 10, 0), datetime(2018, 10, 17, 12, 0))]
 
 if __name__ == "__main__":
     #import sys;sys.argv = ['', 'Test.test_01_get_free_slots']

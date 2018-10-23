@@ -1,5 +1,5 @@
 {
-    "interviewer": ["Sarah", "Philip"],
+    "interviewer": ["Thomas", "Philip"],
     "candidate": {
         "name": "Carl",
         "slots": [

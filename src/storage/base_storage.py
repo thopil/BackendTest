@@ -69,3 +69,17 @@ class BaseStorage(Singleton):
                      datetime.strptime(slot[1], dt_format)) for slot in slots]
         except IndexError:
             raise BadRequest('Please check your slots', 400)
+
+    def _merge_slots(self, slots):
+        data = sorted(list(slots))
+        result = []
+        t_old = data[0]
+        for t in data[1:]:
+            if t_old[1] == t[0]:  #I assume that the data is sorted already
+                t_old = ((min(t_old[0], t[0]), max(t_old[1], t[1])))
+            else:
+                result.append(t_old)
+                t_old = t
+        else:
+            result.append(t_old)
+        return result
