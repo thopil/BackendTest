@@ -70,7 +70,7 @@ Datetime strings have to be in format "YYYY-mm-dd HH:MM:SS"
 1. to POST new slots
 
 ```javascript
-{ "interviewer_1": [["slot_start", "slot_end", ...]],
+{ "interviewer_1": [["slot_start", "slot_end"], [...]],
   "interviewer_2": [[...]] }
 ```
 2. GET available slots for a list of interviewer
@@ -79,7 +79,7 @@ Datetime strings have to be in format "YYYY-mm-dd HH:MM:SS"
 { "interviewer": ["interviewer_1", "interviewer_2", ...],
   "candidate":{
       "name": "name",
-      "slots": [["slot_start", "slot_end", ...]]
+      "slots": [["slot_start", "slot_end"], [...]]
   }
  }
 ```
