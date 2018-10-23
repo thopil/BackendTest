@@ -42,7 +42,7 @@ Candidates send a request including free slots and a list of interviewers.
 ### Usage (Naive approach)
 1. http://localhost:5000/api/v1/interviewer
 2. http://localhost:5000/api/v1/slots/interviewer_1
-3. send available slots of interviewers, e.g. from testfile in src-folder:<br />
+3. send available slots of interviewers, e.g. from testfiles in src/test/test_json_files:<br />
 ```
     curl -X POST http://localhost:5000/api/v1/slots -d @test_data_interviewer.json --header "Content-Type: application/json"
 ```
@@ -64,6 +64,25 @@ Just send a POST request to the server by <br />
     curl -X GET http://localhost:5000/api/v1/slots_np -d @test_data_np.json --header "Content-Type: application/json"
 ```
 
+### Structure of JSON requests
+
+Datetime strings have to be in format "YYYY-mm-dd HH:MM:SS"
+1. to POST new slots
+
+```javascript
+{ "interviewer_1": [["slot_start", "slot_end"], [...]],
+  "interviewer_2": [[...]] }
+```
+2. GET available slots for a list of interviewer
+
+```javascript
+{ "interviewer": ["interviewer_1", "interviewer_2", ...],
+  "candidate":{
+      "name": "name",
+      "slots": [["slot_start", "slot_end"], [...]]
+  }
+ }
+```
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
