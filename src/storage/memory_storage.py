@@ -8,7 +8,7 @@ import numpy as np
 from datetime import timedelta, datetime
 from functools import reduce
 
-from base_storage import BaseStorage
+from storage.base_storage import BaseStorage
 from roles.interviewer import Interviewer
 from roles.candidate import Candidate
 
@@ -51,9 +51,10 @@ class MemoryStorage(BaseStorage):
         del self.__slots_by_interviewer
 
     def del_slots_by_interviewer(self, name):
-        if name in self.__interviewers:
+        if any(x.get_name() == name for x in self.__interviewers):
             del self.__slots_by_interviewer[name]
-            self.__interviewers.remove(name)
+            interviewer = Interviewer(name)
+            self.__interviewers.remove(interviewer)
             return True
         return False
 
@@ -110,22 +111,29 @@ class MemoryStorage(BaseStorage):
         :param identifier: key to identify slot
         :param slot: free slot
         '''
+        if interviewer in self.__interviewers:
+            return False
+
         new_slots = self._format_time_ranges(slots)
         with self.lock:
             self.__slots_by_interviewer[interviewer.name] = new_slots
             self.__interviewers.append(interviewer)
 
-    def update_slots_by_interviewer(self, interviewer, slots):
+    def update_slots_by_interviewer(self, name, slots):
         '''
         update a new slot for a given interviewer
         needs to be thread-safe
         :param identifier: key to identify slot
         :param slot: free slot
         '''
+        if not any(x.get_name() == name for x in self.__interviewers):
+            return False
+
         new_slots = self._format_time_ranges(slots)
         with self.lock:
-            self.__slots_by_interviewer[interviewer.name] = new_slots
-            self.__interviewers.append(interviewer)
+            self.__slots_by_interviewer[name] = new_slots
+
+        return True
 
     def already_exists(self, name):
         if name in self.__interviewers:

@@ -90,20 +90,9 @@ def api_interviewer_all():
 @app.route('/api/v1/interviewer/<name>', methods=['DELETE'])
 def api_delete_by_interviewer(name):
     success = storage.del_slots_by_interviewer(name)
-    return jsonify({'success': success})
+    return jsonify({'success': success, 'message': 'deleted'})
 
 #-- POST
-
-@app.route('/api/v1/slots/<name>', methods=['POST'])
-def api_set_slots_by_name():
-    if not request.json or not 'slots' in request.json:
-        return 'Error: No post data provided'
-
-    slots = request.json.get('slots')
-    name = request.json.get('name')
-    interviewer = Interviewer(name)
-    storage.set_slots_by_interviewer(interviewer, slots)
-    return json.dumps({'success':True, 'message': 'Slots successfully set!'}), 200, {'ContentType':'application/json'}
 
 @app.route('/api/v1/slots', methods=['POST'])
 def api_set_slots():
@@ -113,15 +102,14 @@ def api_set_slots():
     return json.dumps({'success':True, 'message': 'Slots successfully set!'}), 200, {'ContentType':'application/json'}
 
 #-- PUT
-@app.route('/api/v1/slots/<name>', methods=['PUT'])
+@app.route('/api/v1/slots', methods=['PUT'])
 def api_update_slots_by_name():
-    if not request.json or not 'slots' in request.json:
-        return 'Error: No post data provided'
-
-    slots = request.json.get('slots')
-    name = request.json.get('name')
-    storage.update_slots_by_interviewer(interviewer, slots)
-    return json.dumps({'success':True, 'message': 'Slots successfully set!'}), 200, {'ContentType':'application/json'}
+    success = False
+    if request.json:
+        for name, slots in request.json.items():
+            success = storage.update_slots_by_interviewer(name, slots)
+        return json.dumps({'success':success, 'message': 'Slots successfully updated!'}), 200, {'ContentType':'application/json'}
+    return json.dumps({'success': success, 'message': 'No JSON data set!'}), 200, {'ContentType':'application/json'}
 
 #-- error handling
 @app.errorhandler(Exception)
