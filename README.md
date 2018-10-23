@@ -39,7 +39,16 @@ Candidates send a request including free slots and a list of interviewers.
 ```
 6. to get a better overview how the request structs are built, feel free to run the tests
 
+### Usage (Complete flow)
+
+A complete flow including all HTTP methods can be executed by (started server required)
+
+```
+./src/test/test_json_files/fixture.sh
+```
+
 ### Usage (Naive approach)
+
 1. http://localhost:5000/api/v1/interviewer
 2. http://localhost:5000/api/v1/slots/interviewer_1
 3. send available slots of interviewers, e.g. from testfiles in src/test/test_json_files:<br />
