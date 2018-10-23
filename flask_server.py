@@ -11,10 +11,10 @@ import json
 import flask
 from flask import request, jsonify
 
-from storage.storage_factory import StorageFactory
-from roles.candidate import Candidate
-from roles.interviewer import Interviewer
-from exceptions.bad_request import BadRequest
+from src.storage.storage_factory import StorageFactory
+from src.roles.candidate import Candidate
+from src.roles.interviewer import Interviewer
+from src.exceptions.bad_request import BadRequest
 
 app = flask.Flask(__name__)
 app.config["DEBUG"] = True

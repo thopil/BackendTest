@@ -8,9 +8,9 @@ import numpy as np
 from datetime import timedelta, datetime
 from functools import reduce
 
-from storage.base_storage import BaseStorage
-from roles.interviewer import Interviewer
-from roles.candidate import Candidate
+from .base_storage import BaseStorage
+from src.roles.interviewer import Interviewer
+from src.roles.candidate import Candidate
 
 initial_data = {
     'interviewer_1': [

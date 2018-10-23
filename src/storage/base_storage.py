@@ -3,9 +3,10 @@ Created on 12 Oct 2018
 
 @author: tp
 '''
-from singleton import Singleton
 from datetime import datetime
-from exceptions.bad_request import BadRequest
+
+from ..singleton import Singleton
+from ..exceptions.bad_request import BadRequest
 
 
 class BaseStorage(Singleton):

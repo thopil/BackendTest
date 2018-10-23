@@ -3,7 +3,7 @@ Created on 12 Oct 2018
 
 @author: tp
 '''
-from roles.person import Person
+from .person import Person
 
 
 class Interviewer(Person):
